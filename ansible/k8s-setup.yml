@@ -1,15 +1,55 @@
-ansible/k8s-setup.yml
-- hosts: all
-  become: yes
+---
+- name: Configure Kubernetes Node
+  hosts: all
+  become: true
+  gather_facts: yes
+
   tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
     - name: Install Docker
       apt:
         name: docker.io
-        update_cache: yes
+        state: present
 
-    - name: Install Kubernetes tools
+    - name: Start and enable Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Disable swap
+      shell: swapoff -a
+
+    - name: Install Kubernetes dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+        state: present
+
+    - name: Add Kubernetes apt key
+      shell: |
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key \
+        | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add Kubernetes repo
+      shell: |
+        echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] \
+        https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" \
+        > /etc/apt/sources.list.d/kubernetes.list
+
+    - name: Install kubeadm, kubelet, kubectl
       apt:
         name:
           - kubelet
           - kubeadm
           - kubectl
+        state: present
+        update_cache: yes
+
+    - name: Hold Kubernetes packages
+      shell: apt-mark hold kubelet kubeadm kubectl
