@@ -1,35 +1,38 @@
 ---
 - name: Configure Kubernetes Node
   hosts: all
-  become: true
-  gather_facts: yes
+  become: yes
 
   tasks:
-    - name: Update apt cache
+    - name: Update system
       apt:
         update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
 
     - name: Install Docker
       apt:
         name: docker.io
         state: present
 
-    - name: Start and enable Docker
-      service:
+    - name: Enable Docker
+      systemd:
         name: docker
-        state: started
         enabled: yes
+        state: started
 
     - name: Disable swap
-      shell: swapoff -a
-
-    - name: Install Kubernetes dependencies
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-        state: present
+      shell: |
+        swapoff -a
+        sed -i '/ swap / s/^/#/' /etc/fstab
 
     - name: Add Kubernetes apt key
       shell: |
@@ -42,7 +45,7 @@
         https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" \
         > /etc/apt/sources.list.d/kubernetes.list
 
-    - name: Install kubeadm, kubelet, kubectl
+    - name: Install Kubernetes components
       apt:
         name:
           - kubelet
@@ -52,4 +55,41 @@
         update_cache: yes
 
     - name: Hold Kubernetes packages
-      shell: apt-mark hold kubelet kubeadm kubectl
+      shell: |
+        apt-mark hold kubelet kubeadm kubectl
+
+    # 🔥 KUBEADM INIT (CRITICAL)
+    - name: Initialize Kubernetes cluster
+      command: kubeadm init --pod-network-cidr=10.244.0.0/16
+      args:
+        creates: /etc/kubernetes/admin.conf
+
+    - name: Create kube directory
+      file:
+        path: /home/ubuntu/.kube
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Copy kubeconfig
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ubuntu/.kube/config
+        remote_src: yes
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Install Flannel CNI
+      become_user: ubuntu
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+      environment:
+        KUBECONFIG: /home/ubuntu/.kube/config
+
+    - name: Remove control-plane taint
+      become_user: ubuntu
+      shell: |
+        kubectl taint nodes --all node-role.kubernetes.io/control-plane- || true
+      environment:
+        KUBECONFIG: /home/ubuntu/.kube/config
