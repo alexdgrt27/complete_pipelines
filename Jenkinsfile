@@ -65,14 +65,13 @@ pipeline {
            KUBERNETES CONFIG
         ======================== */
         stage('Configure Kubernetes') {
-            steps {
-                sh '''
-                  test -f k8s_ip.txt
-                  ansible-playbook ansible/k8s-setup.yml \
-                  -i "$(cat k8s_ip.txt),"
-                '''
-            }
-        }
+    steps {
+        sh '''
+        export ANSIBLE_HOST_KEY_CHECKING=False
+        ansible-playbook ansible/k8s-setup.yml -i $(cat k8s_ip.txt),
+        '''
+    }
+ }
 
         /* =======================
            APPLICATION DEPLOY
