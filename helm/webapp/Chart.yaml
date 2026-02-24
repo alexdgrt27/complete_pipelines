@@ -1,0 +1,12 @@
+apiVersion: v2
+name: webapp
+version: 1.0.0
+type: application
+helm/webapp/values.yaml
+replicaCount: 3
+image:
+  repository: tomcat
+  tag: "9"
+service:
+  type: LoadBalancer
+  port: 80

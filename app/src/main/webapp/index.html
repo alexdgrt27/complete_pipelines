@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>alex.com | Advanced IT Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#060b1a;
+color:white;
+overflow-x:hidden;
+}
+
+/* Animated Gradient Background */
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 30%, #00f0ff55, transparent 40%),
+radial-gradient(circle at 80% 70%, #ff00c855, transparent 40%),
+radial-gradient(circle at 50% 50%, #00ff8855, transparent 40%);
+animation:moveBg 12s infinite alternate;
+z-index:-2;
+}
+
+@keyframes moveBg{
+0%{transform:scale(1);}
+100%{transform:scale(1.2);}
+}
+
+/* Floating Particles */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* Header */
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 60px;
+}
+
+header h1{
+font-size:2.5rem;
+font-weight:800;
+background:linear-gradient(90deg,#00f0ff,#ff00c8,#00ff88);
+-webkit-background-clip:text;
+color:transparent;
+text-shadow:0 0 20px #00f0ff;
+}
+
+nav a{
+margin-left:30px;
+color:white;
+text-decoration:none;
+transition:.3s;
+}
+
+nav a:hover{
+color:#00f0ff;
+}
+
+/* Hero */
+.hero{
+height:90vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+perspective:1000px;
+}
+
+.hero-box{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+padding:60px;
+border-radius:30px;
+box-shadow:0 40px 80px rgba(0,0,0,.6);
+animation:float 6s infinite ease-in-out;
+}
+
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0px);}
+}
+
+.hero h2{
+font-size:3.5rem;
+font-weight:800;
+background:linear-gradient(90deg,#00f0ff,#ff00c8);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.hero p{
+margin-top:20px;
+font-size:1.2rem;
+opacity:.9;
+}
+
+.hero button{
+margin-top:30px;
+padding:15px 40px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00f0ff,#ff00c8);
+color:white;
+font-size:1.1rem;
+cursor:pointer;
+transition:.4s;
+}
+
+.hero button:hover{
+transform:scale(1.1);
+box-shadow:0 0 25px #00f0ff;
+}
+
+/* Courses */
+section{
+padding:100px 60px;
+}
+
+section h3{
+text-align:center;
+font-size:2.8rem;
+margin-bottom:60px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:40px;
+}
+
+.card{
+background:rgba(255,255,255,0.1);
+padding:40px;
+border-radius:25px;
+backdrop-filter:blur(20px);
+box-shadow:0 25px 50px rgba(0,0,0,.6);
+transition:.4s;
+transform-style:preserve-3d;
+}
+
+.card:hover{
+transform:rotateY(15deg) rotateX(10deg) scale(1.08);
+background:linear-gradient(135deg,#00f0ff33,#ff00c833);
+}
+
+.card h4{
+font-size:1.5rem;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:.9rem;
+opacity:.8;
+}
+
+/* Footer */
+footer{
+text-align:center;
+padding:40px;
+background:#020616;
+opacity:.8;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<header>
+<h1>alex.com</h1>
+<nav>
+<a href="#">Home</a>
+<a href="#">Courses</a>
+<a href="#">About</a>
+<a href="#">Contact</a>
+</nav>
+</header>
+
+<div class="hero">
+<div class="hero-box">
+<h2>Master Advanced IT Technologies</h2>
+<p>Cisco • Juniper • AWS • Azure • GCP • Firewall • SD-WAN • DevOps • Kubernetes • Cyber Security</p>
+<button>Start Learning</button>
+</div>
+</div>
+
+<section>
+<h3>🔥 Our Advanced Programs</h3>
+<div class="grid">
+
+<div class="card"><h4>Cisco Enterprise</h4><p>CCNA, CCNP, CCIE Enterprise Infrastructure</p></div>
+<div class="card"><h4>Juniper Networks</h4><p>JNCIA, JNCIS, JNCIP Security & Routing</p></div>
+<div class="card"><h4>AWS Cloud</h4><p>Solutions Architect, DevOps Engineer</p></div>
+<div class="card"><h4>Microsoft Azure</h4><p>AZ-104, AZ-305, Azure DevOps</p></div>
+<div class="card"><h4>Google Cloud</h4><p>Professional Cloud Architect</p></div>
+<div class="card"><h4>Firewall Security</h4><p>Palo Alto, Fortinet, Checkpoint</p></div>
+<div class="card"><h4>SD-WAN</h4><p>Cisco Viptela, Versa, Silver Peak</p></div>
+<div class="card"><h4>DevOps</h4><p>Jenkins, Docker, Kubernetes, Terraform</p></div>
+<div class="card"><h4>Cyber Security</h4><p>Ethical Hacking, SOC, SIEM</p></div>
+<div class="card"><h4>Linux & Automation</h4><p>Shell Scripting, Ansible</p></div>
+<div class="card"><h4>Python Programming</h4><p>Automation, Networking & Cloud</p></div>
+<div class="card"><h4>Data Center</h4><p>Virtualization, VMware, Storage</p></div>
+
+</div>
+</section>
+
+<footer>
+© 2026 alex.com | Next-Gen IT Training Institute 🚀
+</footer>
+
+<script>
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+
+class Particle{
+constructor(){
+this.x = Math.random()*canvas.width;
+this.y = Math.random()*canvas.height;
+this.size = Math.random()*2+1;
+this.speedX = Math.random()*1-0.5;
+this.speedY = Math.random()*1-0.5;
+}
+update(){
+this.x += this.speedX;
+this.y += this.speedY;
+if(this.x<0||this.x>canvas.width) this.speedX*=-1;
+if(this.y<0||this.y>canvas.height) this.speedY*=-1;
+}
+draw(){
+ctx.fillStyle="#00f0ff";
+ctx.beginPath();
+ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fill();
+}
+}
+
+function init(){
+for(let i=0;i<100;i++){
+particlesArray.push(new Particle());
+}
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particlesArray.forEach(p=>{
+p.update();
+p.draw();
+});
+requestAnimationFrame(animate);
+}
+
+init();
+animate();
+</script>
+
+</body>
+</html>

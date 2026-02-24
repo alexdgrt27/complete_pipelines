@@ -1,0 +1,15 @@
+ansible/k8s-setup.yml
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        update_cache: yes
+
+    - name: Install Kubernetes tools
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl

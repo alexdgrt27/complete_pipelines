@@ -1,0 +1,15 @@
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl
+
+# Jenkins
+**/workspace/
+**/workspaces/
+
+# OS / Editor
+*.log
+*.tmp
+*.swp
+.DS_Store

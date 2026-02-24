@@ -1,0 +1,10 @@
+server:
+  service:
+    type: LoadBalancer
+helm/monitoring/grafana-values.yaml
+service:
+  type: LoadBalancer
+adminPassword: admin123
+helm/monitoring/loki-values.yaml
+loki:
+  enabled: true
